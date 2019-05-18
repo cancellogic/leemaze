@@ -1,0 +1,14 @@
+[package]
+# A generalized Lee Algorithm that finds a single shortest path for 2d, 3d, 4d or even 5d binary block mazes (5d Vec<Vec<Vec<Vec<Vec<bool>>>>>).
+# Convert your data into a vector maze of wall trues and open path falses.  Then with a list of allowed directional moves, and entrance and exit and get a single shortest path solution.
+# the maze path solver returns None or Some(Vec<usized_index_of_direction_choices>).  If the entrance and exit are the same the solver returns an empty vector.
+name = "leemaze"
+version = "0.1.0"
+authors = ["Dustan doud <dustand@gmail.com>"]
+edition = "2018"
+
+description = "A generalized Lee Algorithm - Fastest Flood Fill Path type - solver for 2d, 3d, 4d or even 5d binary block mazes (5d Vec<Vec<Vec<Vec<Vec<bool>>>>>).  # Convert your data into a vector maze of wall trues and open falses.  Take the boolean maze, a list of allowed directional moves, and entrance and exit and get Some(Vec<shortest_usized_index_of_direction_choices>)."
+license = "MIT OR Apache-2.0"
+keywords = ["Lee", "Maze", "Path", "Navigation"]
+
+[dependencies]
