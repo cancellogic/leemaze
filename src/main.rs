@@ -8,6 +8,7 @@
 /// Mazes & minataurs remind me of that song Woolly Bully, so thanks Sam the Sham for that ear-worm.
 ///
 /// # Example
+/// // there is an example in main.rs of how to use leemaze to get navigation directions in a 3d maze.
 /// use leemaze::*;
   fn main() {
      let thisisanexamplenonrectangularthreedmaze = vec![
@@ -26,22 +27,24 @@
              vec![1, 0, 0, 1, 0],
          ],
      ];
- 
+     //convert integer easy read version into a pool of bool 
      let boolean_maze: Vec<Vec<Vec<bool>>> =
          boolify_3d_maze(&0, &thisisanexamplenonrectangularthreedmaze);
- 
+     
+     //Here axis moves is the list of allowed 3d moves along each axis.  Change it up to represent chess Knight or King moves or maybe always force one forward move along a time axis.   
      let axis_moves = AllowedMoves3D {
-         moves: vec![
-             (0, 0, -1),
-             (0, 0, 1),
-             (0, -1, 0),
-             (0, 1, 0),
-             (-1, 0, 0),
-             (1, 0, 0),
+         moves: vec![.    //Conceptually, the tupples here represent Axis "(X, Y, Z)" and the changes are how they might connect
+             (0, 0, -1),  //drop level, A index -1 move on axis Z 
+             (0, 0, 1),   //climb level, a index +1 increase on index Z 
+             (0, -1, 0),  //north, A move on axis Y
+             (0, 1, 0),   //south
+             (-1, 0, 0),  //west, A move on axis X
+             (1, 0, 0),   //east
          ],
-     };
+     };  // Chess Knight moves (L's) in 3d might be vec!((-2,-1,0),(-2,1,0),(-1,-2,0),(-1,2,0),(1,-2,0),(1,-2,0),(2,-1,0),(2,1,0), (0,-2,-1),(0,-2,1),(0,-1,-2),(0,-1,2),(0,1,-2),(0,1,-2),(0,2,-1),(0,2,1,),  (-2,0,-1),(-2,0,1),(-1,0,-2),(-1,0,2),(1,0,-2),(1,0,-2),(2,0,-1),(2,0,1)); whew!(long)
+        
      let moves_text: Vec<&str> = vec![
-         "drop level",
+         "drop level",  
          "climb level",
          "north",
          "south",
@@ -49,9 +52,11 @@
          "east",
      ];
  
-     let (from_here, to_there) = ((0, 0, 0), (4, 4, 0));
+     let (from_here, to_there) = ((0, 0, 0), (4, 4, 0));  
  
      let directions = maze_directions3d(&boolean_maze, &axis_moves, &from_here, &to_there);
+     //directions should return directions like None() or Some(vec!(0usize,1,2,3...) ).  If it returned usize directions, use them as a index to pull a value from axis_moves or moves_text  
+    
      let mut lev: i32 = 0;
      println!("Maze");
      for each in thisisanexamplenonrectangularthreedmaze {
@@ -75,20 +80,20 @@
      }
      println!();
  }
-///
-///    println!("diretions from {:?} to {:?} ", from_here, to_there);
-///
-///    if directions.is_some() {
-///        let mut level = 0;
-///
-///        for index in directions.unwrap() {
-///            print!(" {}, ", moves_text[(index as usize)]);
-///        }
-///    } else {
-///        println!("Is there a way through the maze?");
-///    }
-///    println!();
-///}
+
+    println!("diretions from {:?} to {:?} ", from_here, to_there);
+
+    if directions.is_some() {
+        let mut level = 0;
+
+        for index in directions.unwrap() {
+            print!(" {}, ", moves_text[(index as usize)]);
+        }
+    } else {
+        println!("Is there a way through the maze?");
+    }
+    println!();
+}
 
 /// 2d connection rules- provide a vector of (i32,i32) tuples that describe how a player can move in two (x, y) dimensions through a 2d maze.  
 /// North south east west might be vec!( (0,1),(0,-1),(1,0),(-1,0) )
