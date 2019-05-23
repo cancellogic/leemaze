@@ -7,31 +7,81 @@
 /// decode the returned maze direction path with your list of allowed directional maze moves by index value.
 /// Mazes & minataurs remind me of that song Woolly Bully, so thanks Sam the Sham for that ear-worm.
 ///
-fn main() {
-    let _thisisanexamplenonrectangularthreedmaze = vec![
-        vec![
-            vec![0, 1, 0, 0, 0],
-            vec![0, 1, 0, 1, 0],
-            vec![0, 1, 0, 1, 0],
-            vec![0, 1, 0, 1, 1],
-            vec![0, 0, 1, 1, 0],
-        ],
-        vec![
-            vec![0, 1, 0, 0, 0],
-            vec![0, 0, 0],
-            vec![0, 1, 1, 0, 0],
-            vec![0, 1, 0, 0, 0],
-            vec![1, 0, 0, 1, 0],
-        ],
-    ];
-}
+/// # Example
+/// use leemaze::*;
+/// fn main() {
+///    let thisisanexamplenonrectangularthreedmaze = vec![
+///        vec![
+///            vec![0, 1, 0, 0, 0],
+///            vec![0, 1, 0, 1, 0],
+///            vec![0, 1, 0, 1, 0],
+///            vec![0, 1, 0, 1, 1],
+///            vec![0, 0, 1, 1, 0],
+///        ],
+///        vec![
+///            vec![0, 1, 0, 0, 0],
+///            vec![0, 0, 0],
+///            vec![0, 1, 1, 0, 0],
+///            vec![0, 1, 0, 0, 0],
+///            vec![1, 0, 0, 1, 0],
+///        ],
+///    ];
+///
+///    let boolean_maze: Vec<Vec<Vec<bool>>> =
+///        boolify_3d_maze(&0, &thisisanexamplenonrectangularthreedmaze);
+///
+///    let axis_moves = AllowedMoves3D {
+///        moves: vec![
+///            (0, 0, -1),
+///            (0, 0, 1),
+///            (0, -1, 0),
+///            (0, 1, 0),
+///            (-1, 0, 0),
+///            (1, 0, 0),
+///        ],
+///    };
+///    let moves_text: Vec<&str> = vec![
+///        "drop level",
+///        "climb level",
+///        "north",
+///        "south",
+///        "west",
+///        "east",
+///    ];
+///
+///    let (from_here, to_there) = ((0, 0, 0), (4, 4, 0));
+///
+///    let directions = maze_directions3d(&boolean_maze, &axis_moves, &from_here, &to_there);
+///    let mut lev: i32 = 0;
+///    println!("Maze");
+///    for each in thisisanexamplenonrectangularthreedmaze {
+///        println!("maze level {}", lev);
+///        for rows in each {
+///            println!("{:?}", rows);
+///        }
+///        lev = lev + 1;
+///    }
+///
+///    println!("diretions from {:?} to {:?} ", from_here, to_there);
+///
+///    if directions.is_some() {
+///        let mut level = 0;
+///
+///        for index in directions.unwrap() {
+///            print!(" {}, ", moves_text[(index as usize)]);
+///        }
+///    } else {
+///        println!("Is there a way through the maze?");
+///    }
+///    println!();
+///}
 
 /// 2d connection rules- provide a vector of (i32,i32) tuples that describe how a player can move in two (x, y) dimensions through a 2d maze.  
 /// North south east west might be vec!( (0,1),(0,-1),(1,0),(-1,0) )
 /// Chess knight moves might be vec( (1,2),(-1,2),(1,-2),(-1,-2),((2,1),(-2,1),(2,-1),(-2,-1) )
 #[derive(Debug, Clone)]
 pub struct AllowedMoves2D {
-    rules: Vec<(i32, i32)>,
+    pub moves: Vec<(i32, i32)>,
     //let northsoutheastwest = AllowedMoves2D {moves:vec![(0,1),(0,-1),(1,0),(-1,0)]};
 }
 
@@ -40,7 +90,7 @@ pub struct AllowedMoves2D {
 /// let northsoutheastwestupdown = vec!( (0,1,0),(0,-1,0),(1,0,0),(-1,0,0),(0,0,1),(0,0,-1) );
 #[derive(Debug, Clone)]
 pub struct AllowedMoves3D {
-    rules: Vec<(i32, i32, i32)>,
+    pub moves: Vec<(i32, i32, i32)>,
     //let northsoutheastwestupdown = AllowedMoves2D {moves:vec![(0,1,0),(0,-1,0),(1,0,0),(-1,0,0),(0,0,1),(0,0,-1)]};
 }
 
@@ -48,14 +98,14 @@ pub struct AllowedMoves3D {
 ///4d connection rules - provide a vector of tuples that describe allowed maze moves in (w,x,y,z) dimensions.
 #[derive(Debug, Clone)]
 pub struct AllowedMoves4D {
-    rules: Vec<(i32, i32, i32, i32)>,
+    pub moves: Vec<(i32, i32, i32, i32)>,
 }
 
 ///The 5D maze - If you've ever planned a new morning commute based on prior commutes you are at least passingly familiar with a 5d space time probability maze.
 ///5d connection rules - provide a vector of tuples that describe how you can directionally move in the 5 dimensional space with this structure.
 #[derive(Debug, Clone)]
 pub struct AllowedMoves5D {
-    rules: Vec<(i32, i32, i32, i32, i32)>,
+    pub moves: Vec<(i32, i32, i32, i32, i32)>,
 }
 
 /// Boolify turns a generic 2d Vec<Vec<T>> into a 2d Vec<Vec<bool>>, just provide a <T> value for open roads blocks.   
@@ -120,7 +170,7 @@ pub fn boolify_5d_maze<T: Ord>(
 }
 
 ///mazestate2d:  Given a boolean maze and i32 coordinates, this (always works index guarded) function returns open roads (0pen false) or blocked (b1ocked true).
-pub fn mazestate2d(maze: &Vec<Vec<bool>>, pos: &(i32, i32)) -> bool {
+fn mazestate2d(maze: &Vec<Vec<bool>>, pos: &(i32, i32)) -> bool {
     //False = Open (open can be spelled 0pen, 0 for false),  Wall (Walls can be spelled wa11, 1 for true.)
     let (x, y) = *pos;
     if x < 0i32 {
@@ -143,7 +193,7 @@ pub fn mazestate2d(maze: &Vec<Vec<bool>>, pos: &(i32, i32)) -> bool {
 }
 
 ///mazestate3d:  Given a boolean maze and i32 coordinates, this (always works index guarded) function returns open roads (0pen false) or blocked (b1ocked true).
-pub fn mazestate3d(maze: &Vec<Vec<Vec<bool>>>, pos: &(i32, i32, i32)) -> bool {
+fn mazestate3d(maze: &Vec<Vec<Vec<bool>>>, pos: &(i32, i32, i32)) -> bool {
     let (x, y, z) = *pos;
 
     if x < 0i32 {
@@ -178,7 +228,7 @@ pub fn mazestate3d(maze: &Vec<Vec<Vec<bool>>>, pos: &(i32, i32, i32)) -> bool {
 }
 
 ///mazestate4d:  Given a boolean maze and i32 coordinates, this (always works index guarded) function returns open roads (0pen false) or blocked (b1ocked true).
-pub fn mazestate4d(maze: &Vec<Vec<Vec<Vec<bool>>>>, pos: &(i32, i32, i32, i32)) -> bool {
+fn mazestate4d(maze: &Vec<Vec<Vec<Vec<bool>>>>, pos: &(i32, i32, i32, i32)) -> bool {
     let (w, x, y, z) = *pos; //you can use any x y z time arrangement you like
     if w < 0i32 {
         return true;
@@ -220,7 +270,7 @@ pub fn mazestate4d(maze: &Vec<Vec<Vec<Vec<bool>>>>, pos: &(i32, i32, i32, i32)) 
     (((maze[z])[y])[x])[w]
 }
 ///mazestate5d:  Given a boolean maze and i32 coordinates, this (always works index guarded) function returns open roads (0pen false) or blocked (b1ocked true).
-pub fn mazestate5d(maze: &Vec<Vec<Vec<Vec<Vec<bool>>>>>, pos: &(i32, i32, i32, i32, i32)) -> bool {
+fn mazestate5d(maze: &Vec<Vec<Vec<Vec<Vec<bool>>>>>, pos: &(i32, i32, i32, i32, i32)) -> bool {
     let (v, w, x, y, z) = *pos;
     if v < 0i32 {
         return true;
@@ -273,7 +323,7 @@ pub fn mazestate5d(maze: &Vec<Vec<Vec<Vec<Vec<bool>>>>>, pos: &(i32, i32, i32, i
 
 //a mazewalker, spawn a player every time there is more than 1 path, players die if they can't go onward or meet player footsteps
 #[derive(Debug, Clone)]
-pub struct Mazewalker {
+struct Mazewalker {
     position_vec: Vec<usize>, //player's current posisiton as xy, xyz or xyzt coordinates.
     move_history: Vec<usize>, // history of index values for each allowed move along a path so if allowed moves were vec![north, south, east, west] an player went North North West maze path index should be vec![0,0,3]
 }
@@ -290,24 +340,24 @@ fn sketch(boolvec: &Vec<Vec<bool>>) {
     }
 }
 
-///Maze2dpath - feed it a maze Vec<Vec<bool>>, x y axis movement rules (like nw, ne, south), entrance and exit coordinates and it should return  Some(one of the very fastest
-///paths through the maze), None for no path, and a empty path vec for a entrance and exit that are the same.  Decode the steps taken on the path with the allowed move list.
+///maze_directions2d - feed it a maze Vec<Vec<bool>>, x y axis movement rules (like nw, ne, south), entrance and exit coordinates and it should return  Some(one of the very fastest
+///paths through the maze), None() for no path, and a empty vec for a entrance and exit that are the same.  Decode the steps taken on the path with the allowed move list.
 ///(If your move list is vec!(north, south, east, west, upside_down), a path of 0, 0, 2, 4 would be 'north, north, east, upside down")    
-pub fn maze2dpath(
+pub fn maze_directions2d(
     in_maze: &Vec<Vec<bool>>,
     moverules: &AllowedMoves2D,
-    entrancepointxy: &(usize, usize),
-    exitpointxy: &(usize, usize),
+    from: &(usize, usize),
+    goal: &(usize, usize),
 ) -> Option<Vec<usize>> {
     let mut maze = in_maze.clone();
-    let mut position_vec: Vec<usize> = vec![entrancepointxy.0, entrancepointxy.1];
+    let mut position_vec: Vec<usize> = vec![from.0, from.1];
     let mut move_history: Vec<usize> = vec![];
     let mut players: Vec<Mazewalker> = vec![Mazewalker {
         position_vec,
         move_history,
     }];
     let mut newplayers = vec![];
-    let (exitx, exity) = exitpointxy;
+    let (exitx, exity) = goal;
 
     loop {
         for player in players.iter() {
@@ -319,7 +369,7 @@ pub fn maze2dpath(
 
             (maze[py])[px] = true; // the player's leave footsteps
 
-            for (i, dance) in moverules.rules.iter().enumerate() {
+            for (i, dance) in moverules.moves.iter().enumerate() {
                 //adjust player px py location to possible move loc}
                 let (offsetx, offsety) = dance;
                 let (tx, ty) = ((px as i32) + offsetx, (py as i32) + offsety);
@@ -349,25 +399,25 @@ pub fn maze2dpath(
     } //loop
 }
 
-///Maze3dpath - feed it a maze Vec<Vec<Vec<bool>>>, x y z axis movement rules (like over under around and through), entrance and exit coordinates and it should return
+///maze_directions3d - feed it a maze Vec<Vec<Vec<bool>>>, x y z axis movement rules (like over under around and through), entrance and exit coordinates and it should return
 /// Some(one of the very fastest paths through the maze), None for no path, or a empty path vec for a entrance and exit that are the same.
 ///Decode the steps taken on the path with the allowed move list.
 ///(If your move list is vec!(over, under, around, through), a path of 0, 0, 3 would be 'over over through")
-pub fn maze3dpath(
+pub fn maze_directions3d(
     //Lee algorithm, otherwise known as only the fastest flood fill path survives
     in_maze: &Vec<Vec<Vec<bool>>>,
     moverules: &AllowedMoves3D,
-    entrancepoint: &(usize, usize, usize),
-    exitpoint: &(usize, usize, usize),
+    from: &(usize, usize, usize),
+    goal: &(usize, usize, usize),
 ) -> Option<Vec<usize>> {
     let mut maze = in_maze.clone();
 
     //Case entrance is exit, solution involves no movement
-    if *entrancepoint == *exitpoint {
+    if *from == *goal {
         return Some(vec![]);
     }
 
-    let mut position_vec: Vec<usize> = vec![entrancepoint.0, entrancepoint.1, entrancepoint.2];
+    let mut position_vec: Vec<usize> = vec![from.0, from.1, from.2];
     let mut move_history: Vec<usize> = vec![];
     let mut players: Vec<Mazewalker> = vec![Mazewalker {
         position_vec,
@@ -375,7 +425,7 @@ pub fn maze3dpath(
     }];
 
     let mut newplayers = vec![];
-    let (entrancex, entrancey, entrancez) = *entrancepoint;
+    let (entrancex, entrancey, entrancez) = *from;
     {
         ((maze[entrancez])[entrancey])[entrancex] = true;
     }
@@ -389,7 +439,7 @@ pub fn maze3dpath(
             );
             //Found Exit, first one prints player path}
 
-            for (i, step) in moverules.rules.iter().enumerate() {
+            for (i, step) in moverules.moves.iter().enumerate() {
                 //adjust player px py location to possible move loc}
                 let (sx, sy, sz) = step; //step offsets from matrix moverules
                 let px = spot.0 as i32; //p for player
@@ -409,7 +459,7 @@ pub fn maze3dpath(
                     move_history.push(i);
 
                     let position_vec = vec![tx as usize, ty as usize, tz as usize];
-                    if (tx as usize, ty as usize, tz as usize) == *exitpoint {
+                    if (tx as usize, ty as usize, tz as usize) == *goal {
                         return Some(move_history);
                     }
                     newplayers.push(Mazewalker {
@@ -426,14 +476,13 @@ pub fn maze3dpath(
             newplayers = vec![];
         }
     } //end while loop
-    return None;
 }
 
-///Maze4dpath - feed it a maze Vec<Vec<Vec<Vec<bool>>>>, w x y z axis movement rules (like (0,0,1,1) , (0,0,1,-1) for northeast and northwest), entrance and exit coordinates
+///maze_directions4d - feed it a maze Vec<Vec<Vec<Vec<bool>>>>, w x y z axis movement rules (like (0,0,1,1) , (0,0,1,-1) for northeast and northwest), entrance and exit coordinates
 /// and it should return  Some(one of the very fastest paths through the maze), None for no path found, and a empty path vec for a entrance and exit that are the same.
 /// Decode the steps taken on the path with the allowed move list.
 ///(If your move list was vec!(north, south, east, west, night, day, up, down), a path of 0, 0, 2, 4, 7 would be 'north, north, east, night, down")
-pub fn maze4dpath(
+pub fn maze_directions4d(
     //Lee algorithm, otherwise known as only the fastest flood fill path survives... at least I
     //think so, the geometry of higher dimensional spaces isn't intuitive and it is possible that Lee wasn't thinking about solving mazes for time travelers.
     //One can think of a 4D maze as moving across lanes of moving trafic to catch an exit (one way move rules)
@@ -478,7 +527,7 @@ pub fn maze4dpath(
             );
             //Found Exit, first one prints player path}
 
-            for (i, step) in moverules.rules.iter().enumerate() {
+            for (i, step) in moverules.moves.iter().enumerate() {
                 //adjust player px py location to possible move loc}
                 let (sw, sx, sy, sz) = step; //step offsets from matrix moverules
                 let pw = spot.0 as i32;
@@ -518,11 +567,11 @@ pub fn maze4dpath(
     } //end while loop
 }
 
-///Maze5dpath - feed it a maze Vec<Vec<Vec<Vec<Vec<bool>>>>>, v w x y z axis movement rules (like (0,0,0,0,-1) for "upside down?"), entrance and exit coordinates
+///mazedirections_5d - feed it a maze Vec<Vec<Vec<Vec<Vec<bool>>>>>, v w x y z axis movement rules (like (0,0,0,0,-1) for "upside down?"), entrance and exit coordinates
 /// and it should return  Some(one of the very fastest paths through the maze), None() for no path found, and Some(empty vec) for a entrance and exit that are the same.
 /// Decode the steps taken on the path with the allowed move list.
 /// If the moves list was vec!(north, south, east, west, night, day, up, down, action_lever), a path of 0, 2, 4, 8 would be 'north, east, nighttime, action_lever"
-pub fn maze5dpath(
+pub fn maze_directions5d(
     //Lee algorithm, otherwise known as only the fastest flood fill path survives... at least I
     //think so, the geometry of five dimensional spaces isn't obvious
     // If one can think 5d maze as morning commute, (a maze of moving cars), repleat with a sprinkling of unpredictable crazy drivers -
@@ -569,7 +618,7 @@ pub fn maze5dpath(
             );
             //Found Exit, first one prints player path}
 
-            for (i, step) in moverules.rules.iter().enumerate() {
+            for (i, step) in moverules.moves.iter().enumerate() {
                 //adjust player px py location to possible move loc}
                 let (sv, sw, sx, sy, sz) = step; //step offsets from matrix moverules
                 let pv = spot.0 as i32;
