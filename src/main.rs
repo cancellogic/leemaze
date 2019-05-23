@@ -9,58 +9,72 @@
 ///
 /// # Example
 /// use leemaze::*;
-/// fn main() {
-///    let thisisanexamplenonrectangularthreedmaze = vec![
-///        vec![
-///            vec![0, 1, 0, 0, 0],
-///            vec![0, 1, 0, 1, 0],
-///            vec![0, 1, 0, 1, 0],
-///            vec![0, 1, 0, 1, 1],
-///            vec![0, 0, 1, 1, 0],
-///        ],
-///        vec![
-///            vec![0, 1, 0, 0, 0],
-///            vec![0, 0, 0],
-///            vec![0, 1, 1, 0, 0],
-///            vec![0, 1, 0, 0, 0],
-///            vec![1, 0, 0, 1, 0],
-///        ],
-///    ];
-///
-///    let boolean_maze: Vec<Vec<Vec<bool>>> =
-///        boolify_3d_maze(&0, &thisisanexamplenonrectangularthreedmaze);
-///
-///    let axis_moves = AllowedMoves3D {
-///        moves: vec![
-///            (0, 0, -1),
-///            (0, 0, 1),
-///            (0, -1, 0),
-///            (0, 1, 0),
-///            (-1, 0, 0),
-///            (1, 0, 0),
-///        ],
-///    };
-///    let moves_text: Vec<&str> = vec![
-///        "drop level",
-///        "climb level",
-///        "north",
-///        "south",
-///        "west",
-///        "east",
-///    ];
-///
-///    let (from_here, to_there) = ((0, 0, 0), (4, 4, 0));
-///
-///    let directions = maze_directions3d(&boolean_maze, &axis_moves, &from_here, &to_there);
-///    let mut lev: i32 = 0;
-///    println!("Maze");
-///    for each in thisisanexamplenonrectangularthreedmaze {
-///        println!("maze level {}", lev);
-///        for rows in each {
-///            println!("{:?}", rows);
-///        }
-///        lev = lev + 1;
-///    }
+  fn main() {
+     let thisisanexamplenonrectangularthreedmaze = vec![
+         vec![
+             vec![0, 1, 0, 0, 0],
+             vec![0, 1, 0, 1, 0],
+             vec![0, 1, 0, 1, 0],
+             vec![0, 1, 0, 1, 1],
+             vec![0, 0, 1, 1, 0],
+         ],
+         vec![
+             vec![0, 1, 0, 0, 0],
+             vec![0, 0, 0],
+             vec![0, 1, 1, 0, 0],
+             vec![0, 1, 0, 0, 0],
+             vec![1, 0, 0, 1, 0],
+         ],
+     ];
+ 
+     let boolean_maze: Vec<Vec<Vec<bool>>> =
+         boolify_3d_maze(&0, &thisisanexamplenonrectangularthreedmaze);
+ 
+     let axis_moves = AllowedMoves3D {
+         moves: vec![
+             (0, 0, -1),
+             (0, 0, 1),
+             (0, -1, 0),
+             (0, 1, 0),
+             (-1, 0, 0),
+             (1, 0, 0),
+         ],
+     };
+     let moves_text: Vec<&str> = vec![
+         "drop level",
+         "climb level",
+         "north",
+         "south",
+         "west",
+         "east",
+     ];
+ 
+     let (from_here, to_there) = ((0, 0, 0), (4, 4, 0));
+ 
+     let directions = maze_directions3d(&boolean_maze, &axis_moves, &from_here, &to_there);
+     let mut lev: i32 = 0;
+     println!("Maze");
+     for each in thisisanexamplenonrectangularthreedmaze {
+         println!("maze level {}", lev);
+         for rows in each {
+             println!("{:?}", rows);
+         }
+         lev = lev + 1;
+     }
+ 
+     println!("diretions from {:?} to {:?} ", from_here, to_there);
+ 
+     if directions.is_some() {
+         let mut level = 0;
+ 
+         for index in directions.unwrap() {
+             print!(" {}, ", moves_text[(index as usize)]);
+         }
+     } else {
+         println!("Is there a way through the maze?");
+     }
+     println!();
+ }
 ///
 ///    println!("diretions from {:?} to {:?} ", from_here, to_there);
 ///
