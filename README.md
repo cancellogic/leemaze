@@ -5,7 +5,7 @@ algorithm to find shortest paths.  (maybe best described as shortest path solved
 What is a 5D maze?  Its a lot like like your morning commute.  The road might seem 3d, but your choices change with time as the trafic
  moves and allowed paths are blocked by cars,  children, pedestrians, trucks, busses, tractors, trains, drawbridges, construction, livestock, pets.
  And that might seem like a 4D maze, but if you are a good driver, you are considering where blocking things might be in the future
- (like erratic drivers) and making adjustments to avoid probabilistic futures that have poor outcomes.  
+ (like erratic drivers) and making adjustments to avoid probabilistic futures that have more poor outcomes.  
  
 So your morning commute is a 5D rat race.
  
