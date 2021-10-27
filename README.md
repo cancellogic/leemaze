@@ -11,8 +11,8 @@ So your morning commute is a 5D rat race.
  
 #Why?  
 I find certain bits of math and programming beautiful.  The juggling of pointers in Lee's algorithm written in Rust seemed like a
-fun thing to try -- as a rust beginner - if I couldn't do Lee's algorithm in rust my opinion was Rust wasn't for me.  
-But rust is great and so I shared.
+fun thing to try in when I was a rust beginner- and if I couldn't do Lee's algorithm in Rust-Lang - my opinion was Rust wasn't for me.  
+But Rust-lang won against my doubts!  And so I share.
 
 #How to use:
 I'm writing this readme a few years after coding Leemaze.  As I recall, (1) make a binary bit maze.  (2) make a list of allowed moves
