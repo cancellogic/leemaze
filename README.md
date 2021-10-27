@@ -10,8 +10,8 @@ What is a 5D maze?  Its a lot like like your morning commute.  The road might se
 So your morning commute is a 5D rat race.
  
 #Why?  
-I find certain bits of math and programming beautiful.  The juggling of pointers in Lee's algorithm written in Rust seemed like a
-fun thing to try in when I was a rust beginner- and if I couldn't do Lee's algorithm in Rust-Lang - my opinion was Rust wasn't for me.  
+I find certain bits of math and programming beautiful.  The juggle of pointers in Lee's algorithm seemed like a
+fun thing to try as a rust beginner- and my opinion at the time was if I couldn't do Lee's algorithm in Rust - Rust wasn't for me.  
 But Rust-lang won against my doubts!  And so I share.
 
 #How to use:
