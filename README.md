@@ -2,9 +2,7 @@
 Leemaze is code that solves binary (path or blocked) 2,3,4 and 5D mazes with Lee's maze algorithm. (https://en.wikipedia.org/wiki/Lee_algorithm)   This code written in rust and when given a boolean vec! maze, set of allowed moves, start and end points, finds the first shortest path as a sequence of allowed moves. 
 
 What is a 5D maze?  Its a lot like like your morning commute.  The road might seem 3d, but your choices change with time as the trafic
-moves and allowed paths are blocked by cars,  children, pedestrians, trucks, busses, tractors, trains, drawbridges, construction, livestock, pets.
-And that might seem like a 4D maze, but if you are a good driver, you are considering where blocking things might be in the future
-(like erratic drivers) and making adjustments to avoid probabilistic futures that have more poor outcomes.  
+moves and allowed paths are blocked by cars,  children, pedestrians, trucks, busses, tractors, trains, drawbridges, construction, livestock, pets, millions of frogs (I'm looking at you Waterville Wisconsin).  And that might seem like a 4D maze, but if you are a good driver, you are considering where blocking things might be in the future (like erratic drivers) and making adjustments to avoid probabilistic futures that have more poor outcomes.  
  
 So since there are many possible futures, your morning commute is a 5D rat race.  
 
